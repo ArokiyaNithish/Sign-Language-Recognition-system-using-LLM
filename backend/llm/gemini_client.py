@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # We need the user's API Key from the .env
-GEMINI_API_KEY = os.getenv("AIzaSyCbr7PSOn7gy6jK0n7SQy6b7Bj29xzWLFs")
+GEMINI_API_KEY = os.getenv("")
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 else:
