@@ -1,5 +1,3 @@
-# SignBridge
-
 **LLM-Enhanced Real-Time Sign Language Recognition for Google Meet**
 
 SignBridge is a full-stack, AI-powered Chrome Extension and Python Backend that bridges the communication gap in video meetings. It uses real-time computer vision to detect sign language, translates it to fluent English using Google Gemini, speaks it out loud, and visually renders other people's speech back into a sign language avatar.
