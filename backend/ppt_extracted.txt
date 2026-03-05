@@ -1,0 +1,113 @@
+TITLE : LLM-Enhanced Real-Time Sign Language
+Recognition for Google Meet
+TEAM :SOLVIX
+Arokiya Nithish J
+Ishwarya .M
+PARVATHAVARTHINI E
+Vel tech university
+Problem Statement
+ In today’s hybrid world, platforms like Google Meet have  This creates:
+become essential for education, corporate meetings,
+❌ Communication gaps
+healthcare consultations, and government services. However,
+these platforms are not fully accessible to over 70 million
+❌ Reduced participation in online learning
+deaf and hard-of-hearing individuals worldwide who rely on
+sign language as their primary mode of communication.
+❌ Workplace inclusion challenges
+❌ Limited digital accessibility
+ Existing accessibility features focus only on speech-to-text,
+ignoring sign language users. There is currently no scalable,
+ Therefore, there is a critical need for an intelligent, low-
+real-time AI system that translates sign language gestures into
+latency, AI-driven system that can recognize sign
+meaningful text during live video calls.
+language in real-time and seamlessly integrate into live
+video conferencing platforms.
+Proposed Solution
+We propose Sign Bridge AI — an LLM-powered, real-time sign language translation assistant for
+Google Meet. What Makes It Innovative? Unlike traditional gesture classifiers, our system combines:
+Core Features:
+ Real-Time Detection Live hand tracking using Media Pipe
+ Computer Vision (hand tracking)
+ AI Gesture Recognition High - accuracy classification with TensorFlow
+ Deep Learning (gesture recognition)
+/ PyTorch
+ Large Language Models (context &
+ LLM Context Engine Powered by OpenAI GPT Transforms gestures →
+grammar understanding)
+natural, context-aware sentences HELLO HELP → “Hello, I need some
+ Live Browser Integration
+assistance.”
+ Seamless Meet Integration Chrome Extension overlay for Google Meet
+<200ms latency
+System Architecture
+TECH STACK
+Core Technologies:
+Application Layer
+Deployment Strategy
+AI & Machine Learning
+Python (Backend AI engine)
+ Local real-time prototype
+ MediaPipe (Hand Landmark
+FastAPI (Low-latency API)
+ Future: Cloud-based
+Detection)
+JavaScript + Chrome
+scalable API
+ OpenCV (Frame Processing)
+Extension API
+ Cross-platform extension
+ TensorFlow / PyTorch (Model
+WebRTC for live stream
+(Meet, Zoom, Teams)
+Training)
+handling
+ LLM API (Context Intelligence)
+IMPLEMENTATION PLAN
+Phase 1 – Data & Model Phase 3 – LLM Context
+Phase 4 – Google Meet
+Phase 2 – Real-Time
+Integration
+Development Engine
+Vision System  Develop Chrome
+Extension overlay
+ Send gesture sequence
+ Inject real-time
+ Collect ASL gesture to LLM caption display
+ Integrate MediaPipe
+ Ensure seamless
+dataset  Add short-term
+compatibility
+with webcam
+ Extract landmark memory buffer
+ Implement frame-by-
+features  Generate
+frame inference
+Phase 5 – Optimization &
+ Train classification grammatically correct
+Scaling
+ Optimize latency
+✔ Accuracy tuning
+model output
+✔ Add multilingual
+(<200ms)
+output
+ Achieve baseline  Handle incomplete
+✔ Expand vocabulary
+accuracy (>90%) gesture sequences ✔ Prepare for real-world
+deployment
+CONCLUSION
+ SignBridge AI bridges the communication gap between sign language users and mainstream digital
+platforms.
+ By combining:
+ Computer Vision
+ Deep Learning
+ Large Language Models
+ Browser Integration
+ We deliver a real-time, scalable, accessibility-first AI solution.
+ This project demonstrates how AI can move beyond automation and create meaningful social impact by
+enabling inclusive digital communication.
+ With further development, this system can be integrated into global video conferencing platforms,
+transforming accessibility standards worldwide.
+THANK YOU
