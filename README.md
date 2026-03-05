@@ -6,6 +6,21 @@ SignBridge is a full-stack, AI-powered Chrome Extension and Python Backend that 
 
 ![SignBridge Header](https://via.placeholder.com/1200x400/0A0E1A/00D4FF?text=SignBridge+AI)
 
+## 🚨 The Problem
+In today's hybrid world, platforms like Google Meet have become essential for education, corporate meetings, healthcare, and government services. However, these platforms remain largely inaccessible to over **70 million deaf and hard-of-hearing individuals** worldwide who rely on sign language as their primary mode of communication.
+Existing accessibility features focus heavily on speech-to-text, ignoring sign language users. This results in severe communication gaps, workplace inclusion challenges, and reduced participation in digital learning. There is a critical need for an intelligent, low-latency, AI-driven system that can translate sign language in real-time on live video platforms.
+
+## 💡 Our Solution
+We propose **SignBridge AI** — an LLM-powered, real-time sign language translation assistant for Google Meet. Unlike traditional gesture classifiers, our innovative system combines:
+- **Computer Vision**: Live hand tracking using MediaPipe.
+- **Deep Learning**: High-accuracy gesture classification with TensorFlow.
+- **Large Language Models**: Powered by Google Gemini. Transforms raw gesture sequences into natural, context-aware, and grammatically correct sentences.
+- **Seamless Meet Integration**: A Chrome Extension overlay that operates directly inside Google Meet with <200ms latency.
+
+## 🌍 Social Impact
+SignBridge AI bridges the communication gap between sign language users and mainstream digital platforms. By delivering a real-time, scalable, accessibility-first AI solution, this project demonstrates how AI can move beyond automation to create meaningful social impact, enabling true inclusive digital communication and transforming accessibility standards worldwide.
+
+
 ## Features Features
 - **Real-Time Translation**: Captures camera frames (15fps) and predicts signs using a bespoke CNN+LSTM model.
 - **LLM Contextualization**: Google Gemini translates raw sign sequences into natural, context-aware sentences.
