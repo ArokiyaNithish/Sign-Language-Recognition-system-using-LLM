@@ -1,0 +1,247 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║          SignBridge — HOW TO RUN (Complete Step-by-Step)          ║
+║          LLM-Enhanced Real-Time Sign Language for Google Meet      ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+What I Built
+━━━━━━━━━━━━
+SignBridge is a Chrome Extension + Python Backend system that:
+  • Detects American Sign Language (ASL) from your webcam in real-time
+  • Converts signs to spoken words using Google Gemini AI
+  • Speaks the translated text aloud in Google Meet calls
+  • Shows a live hand-avatar panel animating what others are saying
+  • Records meeting transcripts and generates AI PDF summaries
+  • Works ONLY on https://meet.google.com
+
+Files Created
+━━━━━━━━━━━━
+signbridge/
+  extension/
+    manifest.json                 ← Chrome Extension V3 config
+    popup/popup.html              ← Login/Dashboard UI (400x550px)
+    popup/popup.css               ← Dark futuristic theme, glassmorphism
+    popup/popup.js                ← Auth logic, live stats, toggles
+    background/background.js      ← Service worker, WebSocket manager
+    content/content.js            ← Meet DOM orchestrator
+    content/signDetector.js       ← Camera capture + frame relay
+    content/speechSynthesis.js    ← TTS + Meet chat injection
+    content/avatarRenderer.js     ← Canvas hand avatar with landmarks
+    content/meetingRecorder.js    ← Tab recording + transcript
+    content/uiOverlay.js          ← Floating draggable panel in Meet
+    assets/icons/                 ← SVG icons (16/48/128px)
+
+  backend/
+    main.py                       ← FastAPI server
+    websocket_server.py           ← Real-time WS handler (20fps limit)
+    sign_recognition/model.py     ← TF CNN+LSTM model (29 ASL classes)
+    sign_recognition/predict.py   ← Sliding window + CTC decoding
+    sign_recognition/train.py     ← Training script (2-phase)
+    sign_recognition/mediapipe_hands.py  ← 126-dim landmark extraction
+    sign_recognition/preprocessor.py    ← cv2 image pipeline
+    llm/gemini_client.py          ← Gemini 1.5 Pro integration
+    llm/context_manager.py        ← Conversation context window
+    llm/summarizer.py             ← Meeting summarizer bridge
+    llm/fine_tune_prep.py         ← JSONL training pair generator
+    auth/auth.py                  ← JWT + bcrypt login/signup
+    auth/models.py                ← SQLAlchemy User model
+    auth/database.py              ← SQLite/Postgres session
+    pdf_generator/summary_pdf.py  ← ReportLab PDF generator
+    requirements.txt              ← All Python dependencies
+    .env.example                  ← Environment variables template
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1 — PYTHON REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+You MUST use Python 3.10 or 3.11 (TensorFlow 2.13 is not compatible
+with Python 3.12+).
+
+Check your Python version:
+  python --version
+
+If you have 3.12+, install Python 3.11 from:
+  https://www.python.org/downloads/release/python-3119/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 2 — SETUP BACKEND
+━━━━━━━━━━━━━━━━━━━━━━
+
+Open a terminal/command prompt and run:
+
+  cd "C:\Users\Arokiya Nithish\OneDrive\Pictures\LLM\signbridge\backend"
+
+Create virtual environment:
+  python -m venv venv
+  venv\Scripts\activate         (Windows)
+  (or: source venv/bin/activate on Mac/Linux)
+
+Install all dependencies:
+  pip install -r requirements.txt
+
+This installs: FastAPI, TensorFlow, MediaPipe, OpenCV,
+Google Gemini, ReportLab, SQLAlchemy, and more.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 3 — GET GEMINI API KEY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to: https://aistudio.google.com/app/apikey
+2. Sign in with Google account
+3. Click "Create API Key"
+4. Copy the key
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 4 — CONFIGURE ENVIRONMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In the backend folder, copy the example .env file:
+  copy .env.example .env
+
+Open .env in Notepad and fill in:
+  GEMINI_API_KEY=paste_your_key_here
+  JWT_SECRET_KEY=any_random_long_string_here
+
+Generate a JWT secret key with Python:
+  python -c "import secrets; print(secrets.token_hex(32))"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 5 — START THE BACKEND SERVER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In backend folder with venv activated:
+  python main.py
+
+You should see:
+  [SignBridge Backend] Database tables ensured.
+  [SignBridge Backend] Server starting up — http://localhost:8000
+  INFO:     Uvicorn running on http://0.0.0.0:8000
+
+Verify it works → open browser: http://localhost:8000/api/health
+Expected: {"status":"ok","service":"SignBridge API",...}
+
+API Docs: http://localhost:8000/docs
+
+KEEP THIS TERMINAL OPEN while using the extension.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 6 — LOAD THE CHROME EXTENSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open Google Chrome
+2. In address bar type: chrome://extensions/
+3. Toggle ON "Developer mode" (top right)
+4. Click "Load unpacked"
+5. Navigate to and select the EXTENSION folder:
+   C:\Users\Arokiya Nithish\OneDrive\Pictures\LLM\signbridge\extension
+6. SignBridge should appear in your extensions
+7. Click the puzzle piece icon (🧩) in toolbar → pin SignBridge
+8. You'll see the hand icon in your Chrome toolbar
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 7 — CREATE ACCOUNT AND USE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Click the SignBridge hand icon in Chrome toolbar
+2. Click "Sign Up" → enter name, email, password → Create Account
+3. Dashboard will show:
+   • Green dot = backend connected ✅
+   • Toggles for Sign→Voice, Voice→Avatar, Record
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 8 — USE IN GOOGLE MEET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to: https://meet.google.com
+2. Join or start a meeting
+3. The SignBridge floating panel appears (bottom-right)
+4. Click "🤟 Detect ON" to start sign detection
+5. Allow camera access when Chrome prompts
+6. Start signing → detected signs appear in the panel
+7. Enable Speech to have signs spoken aloud
+8. Enable Avatar to see hand animation for voice participants
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 9 — TRAIN THE AI MODEL (Optional but Recommended)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Download ASL Dataset from Kaggle:
+  1. Go to: https://kaggle.com/datasets/grassknoted/asl-alphabet
+  2. Download and extract it to: backend/data/
+  3. You will see two folders: `asl_alphabet_train` and `asl_alphabet_test`.
+     - You ONLY need `asl_alphabet_train`.
+     - The training script will automatically split `asl_alphabet_train` into
+       80% training and 20% validation.
+  4. Ensure your folder structure looks exactly like this:
+     backend/data/asl_alphabet/asl_alphabet_train/A/
+     backend/data/asl_alphabet/asl_alphabet_train/B/
+     ... etc ...
+
+Run training:
+  cd backend
+  python sign_recognition/train.py
+
+  This takes 2-4 hours on a GPU.
+  Best model saved to: backend/models/sign_model.h5
+
+Without a trained model, the backend runs in DEMO MODE
+(simulates predictions so you can test the full system).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 10 — TRAIN ON GOOGLE COLAB (GPU, FREE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to: https://colab.research.google.com
+2. Runtime → Change runtime type → T4 GPU
+3. Upload backend/ folder to Colab or link via Google Drive
+4. Run in Colab:
+   !pip install tensorflow==2.13.0 mediapipe opencv-python scikit-learn
+   !cd backend && python sign_recognition/train.py
+5. Download sign_model.h5 to: backend/models/sign_model.h5
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━
+
+Problem: "Cannot reach backend"
+Fix: Make sure backend server is running (Step 5)
+
+Problem: Extension not showing in Meet
+Fix: Be in an active meeting (not just the lobby)
+     Reload the Meet tab after loading extension
+
+Problem: Camera access denied
+Fix: Chrome Settings → Privacy → Camera → Allow for meet.google.com
+
+Problem: TensorFlow install fails
+Fix: Use Python 3.10 or 3.11 (NOT 3.12+)
+     Or use Google Colab for training
+
+Problem: "Model not found" error
+Fix: Run training script or place sign_model.h5 in backend/models/
+     Server runs in demo mode without the model
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+QUICK START SUMMARY
+━━━━━━━━━━━━━━━━━━
+
+1. cd backend && pip install -r requirements.txt
+2. cp .env.example .env && fill in GEMINI_API_KEY
+3. python main.py                   ← keep running
+4. Chrome: Load extension from /signbridge/extension/
+5. Meet: join a call, click Detect ON, start signing!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Built with: FastAPI | TensorFlow 2.13 | MediaPipe | Google Gemini 1.5
+            ReportLab | Chrome Extension Manifest V3 | Web Speech API
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

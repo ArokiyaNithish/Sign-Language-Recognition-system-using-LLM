@@ -1,0 +1,38 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node
+node_modules/
+dist/
+build/
+.npm
+
+# DB
+*.db
+*.sqlite3
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Data
+backend/data/
+backend/models/
+_alphabet_train/
+logs/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp

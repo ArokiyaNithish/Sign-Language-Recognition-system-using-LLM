@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SignBridge</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!--  SCREEN 1 — SIGN UP (shown first)       -->
+  <!-- ═══════════════════════════════════════ -->
+  <div id="screen-signup" class="screen active">
+    <div class="logo-block">
+      <div class="logo-circle">🤟</div>
+      <h1 class="brand">SignBridge</h1>
+      <p class="tagline">Sign Language for Google Meet</p>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">Create Account</h2>
+
+      <div class="field">
+        <label for="su-name">Full Name</label>
+        <input id="su-name" type="text" placeholder="Your full name" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="su-uid">User ID</label>
+        <input id="su-uid" type="text" placeholder="Choose a user ID" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="su-pw">Password</label>
+        <input id="su-pw" type="password" placeholder="Create a password" />
+      </div>
+
+      <div id="su-error" class="error-msg hidden"></div>
+
+      <button id="btn-signup" class="btn-primary">Create Account</button>
+
+      <p class="switch-link">
+        Already have an account?
+        <a id="go-signin" href="#">Sign In</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!--  SCREEN 2 — SIGN IN                     -->
+  <!-- ═══════════════════════════════════════ -->
+  <div id="screen-signin" class="screen">
+    <div class="logo-block">
+      <div class="logo-circle">🤟</div>
+      <h1 class="brand">SignBridge</h1>
+      <p class="tagline">Sign Language for Google Meet</p>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">Welcome Back</h2>
+
+      <div class="field">
+        <label for="si-uid">User ID</label>
+        <input id="si-uid" type="text" placeholder="Enter your user ID" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="si-pw">Password</label>
+        <input id="si-pw" type="password" placeholder="Enter your password" />
+      </div>
+
+      <div id="si-error" class="error-msg hidden"></div>
+
+      <button id="btn-signin" class="btn-primary">Sign In</button>
+
+      <p class="switch-link">
+        No account yet?
+        <a id="go-signup" href="#">Sign Up</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!--  SCREEN 3 — DASHBOARD                   -->
+  <!-- ═══════════════════════════════════════ -->
+  <div id="screen-dashboard" class="screen">
+    <!-- Top bar -->
+    <div class="dash-header">
+      <div class="dash-brand">
+        <span class="dash-icon">🤟</span>
+        <span class="dash-name">SignBridge</span>
+      </div>
+      <button id="btn-signout" class="btn-signout">Sign Out</button>
+    </div>
+
+    <!-- User info pill -->
+    <div class="user-pill" id="user-pill">
+      <div class="user-avatar" id="user-avatar">A</div>
+      <div class="user-info">
+        <span class="user-fullname" id="user-fullname">User Name</span>
+        <span class="user-id-label" id="user-id-label">@userid</span>
+      </div>
+      <div class="status-dot" id="status-dot" title="Backend Status"></div>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="features">
+
+      <!-- Sign Language Toggle -->
+      <div class="feature-card" id="card-sign">
+        <div class="feature-left">
+          <div class="feature-icon">🤟</div>
+          <div class="feature-text">
+            <div class="feature-title">Sign Language Detection</div>
+            <div class="feature-desc" id="sign-status-text">Off — click to enable</div>
+          </div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-sign" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Report Download Toggle -->
+      <div class="feature-card" id="card-report">
+        <div class="feature-left">
+          <div class="feature-icon">📄</div>
+          <div class="feature-text">
+            <div class="feature-title">Meeting Report</div>
+            <div class="feature-desc" id="report-status-text">Off — recording disabled</div>
+          </div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-report" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+    </div>
+
+    <!-- Download Button (shown when report is ON and ended) -->
+    <button id="btn-download" class="btn-download hidden">
+      ⬇ Download Meeting Summary PDF
+    </button>
+
+    <!-- Live sign output -->
+    <div class="detected-box" id="detected-box">
+      <div class="detected-label">Detected Sign</div>
+      <div class="detected-text" id="detected-text">—</div>
+      <div class="detected-phrase" id="detected-phrase"></div>
+    </div>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>
